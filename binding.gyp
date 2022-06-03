@@ -10,7 +10,8 @@
         ["OS == 'linux'", {
           "sources": [
             "src/bcm2835.c",
-            "src/sunxi.c"
+            "src/sunxi.c",
+            "src/s905y2.c"
 	  ]
 	}]
       ]

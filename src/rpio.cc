@@ -28,6 +28,7 @@
 #include <unistd.h>	/* usleep() */
 #include "bcm2835.h"
 #include "sunxi.h"
+#include "s905y2.h" /* Radxa Zero*/
 
 #define RPIO_EVENT_LOW	0x1
 #define RPIO_EVENT_HIGH	0x2
@@ -89,6 +90,7 @@ using namespace Nan;
 
 #define RPIO_SOC_BCM2835	0x0
 #define RPIO_SOC_SUNXI		0x1
+#define RPIO_SOC_S905Y2		0x2
 
 uint32_t soctype = RPIO_SOC_BCM2835;
 
@@ -108,6 +110,10 @@ NAN_METHOD(gpio_function)
 		break;
 	case RPIO_SOC_SUNXI:
 		sunxi_gpio_fsel(pin, mode);
+		break;
+	case RPIO_SOC_S905Y2:
+		//TODO: not implemented
+		//s905y2_gpio_fsel(pin, mode);
 		break;
 	}
 }
@@ -135,6 +141,13 @@ NAN_METHOD(gpio_read)
 			sunxi_gpio_fsel(pin, 0);
 		}
 		NAN_RETURN(sunxi_gpio_lev(pin));
+		break;
+	case RPIO_SOC_S905Y2:
+	//TODO: not implemented
+		if (mode) {
+			//s905y2_gpio_fsel(pin, 0);
+		}
+		//NAN_RETURN(s905y2_gpio_lev(pin));
 		break;
 	}
 }
@@ -165,6 +178,10 @@ NAN_METHOD(gpio_readbuf)
 			buf[i] = sunxi_gpio_lev(pin);
 		}
 		break;
+	case RPIO_SOC_S905Y2:
+		//TODO: not implemented
+		//buf[i] = s905y2_gpio_lev(pin);
+		break;
 	}
 }
 
@@ -181,6 +198,10 @@ NAN_METHOD(gpio_write)
 		break;
 	case RPIO_SOC_SUNXI:
 		sunxi_gpio_write(pin, val);
+		break;
+	case RPIO_SOC_S905Y2:
+		//TODO: not implemented
+		//s905y2_gpio_write(pin, val);
 		break;
 	}
 
@@ -204,6 +225,12 @@ NAN_METHOD(gpio_writebuf)
 	case RPIO_SOC_SUNXI:
 		for (uint32_t i = 0; i < len; i++) {
 			sunxi_gpio_write(pin, buf[i]);
+		}
+		break;
+	case RPIO_SOC_S905Y2:
+		for (uint32_t i = 0; i < len; i++) {
+			//TODO: not implemented
+			//s905y2_gpio_write(pin, buf[i]);
 		}
 		break;
 	}
@@ -241,6 +268,10 @@ NAN_METHOD(gpio_pud)
 		break;
 	case RPIO_SOC_SUNXI:
 		sunxi_gpio_set_pud(pin, pud);
+		break;
+	case RPIO_SOC_S905Y2:
+		//TODO: not implemented
+		//s905y2_gpio_set_pud(pin, pud);
 		break;
 	}
 }
@@ -526,6 +557,12 @@ NAN_METHOD(rpio_init)
 		if (!sunxi_init(gpiomem)) {
 			return ThrowError("Could not initialize sunxi");
 		}
+		break;
+	case RPIO_SOC_S905Y2:
+		//TODO: not implemented
+		/*if (!s905y2_init(gpiomem)) {
+			return ThrowError("Could not initialize s905y2");
+		}*/
 		break;
 	}
 }
